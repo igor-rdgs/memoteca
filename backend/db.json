@@ -64,16 +64,6 @@
       "id": "4d2e",
       "conteudo": "Se eu for aí e achar, eu esfrego na sua cara!",
       "autoria": "Mãe"
-    },
-    {
-      "id": "PHMoSGVep4c",
-      "conteudo": "Na minha maquina funciona",
-      "autoria": "Dev"
-    },
-    {
-      "conteudo": "asdfsdaf",
-      "autoria": "asdfsdaf",
-      "id": "0m7HU9408Qw"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
