@@ -3,8 +3,6 @@ const URL_BASE = "http://localhost:3000"
 const api = {
     async buscarPensamentos() {
         try {
-            // const response = await fetch(`${URL_BASE}/pensamentos`)
-            // return await response.json()
             const response = await axios.get(`${URL_BASE}/pensamentos`)
             return response.data
         } 
@@ -16,14 +14,6 @@ const api = {
 
     async salvarPensamento(pensamento) {
         try {
-            // const response = await fetch(`${URL_BASE}/pensamentos`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-type": "application/json"
-            //     },
-            //     body: JSON.stringify(pensamento)
-            // })
-            // return await response.json()
             const response = await axios.post(`${URL_BASE}/pensamentos`, pensamento)
             return response.data
         } 
@@ -35,8 +25,6 @@ const api = {
     
     async buscarPensamentoPorId(id) {
         try {
-            // const response = await fetch(`${URL_BASE}/pensamentos/${id}`)
-            // return await response.json()
             const response = await axios.get(`${URL_BASE}/pensamentos/${id}`)
             return response.data
 
@@ -49,14 +37,6 @@ const api = {
 
     async editarPensamento(pensamento) {
         try {
-            // const response = await fetch(`${URL_BASE}/pensamentos/${pensamento.id}`, {
-            // method: "PUT",
-            // headers: {
-            //     "Content-type": "application/json"
-            //     },
-            //     body: JSON.stringify(pensamento)
-            // })
-            // return await response.json()
             const response = await axios.put(`${URL_BASE}/pensamentos/${pensamento.id}`, pensamento)
             return response.data
 
@@ -69,13 +49,27 @@ const api = {
 
     async excluirPensamento(id) {
         try {
-            // const response = await fetch(`${URL_BASE}/pensamentos/${id}`, {
-            //     method: "DELETE"
-            // })
             const response = await axios.delete(`${URL_BASE}/pensamentos/${id}`)
         } 
         catch {
             alert('Erro ao excluir pensamento')
+            throw error
+        }
+    },
+
+    async buscarPensamentoPorTermo(termo) {
+        try {
+            const pensamentos = await this.buscarPensamentos()
+            const termoEmMinusculas = termo.toLowerCase()
+
+            const pensamentosFiltrados = pensamentos.filter(pensamento => {
+                return (pensamento.conteudo.toLowerCase().includes(termoEmMinusculas) || 
+                pensamento.autoria.toLowerCase().includes(termoEmMinusculas))
+            })
+            
+            return pensamentosFiltrados
+        } catch (error) {
+            alert('Erro ao filtrar pensamentos')
             throw error
         }
     }
