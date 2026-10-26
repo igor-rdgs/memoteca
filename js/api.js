@@ -1,10 +1,22 @@
 const URL_BASE = "http://localhost:3000"
 
+const converterStringParaData = (dataString) => {
+    const [ano, mes, dia] = dataString.split("-")
+    return new Date(Date.UTC(ano, mes - 1, dia))
+}
+
 const api = {
     async buscarPensamentos() {
         try {
             const response = await axios.get(`${URL_BASE}/pensamentos`)
-            return response.data
+            const pensamentos = response.data
+
+            return pensamentos.map(pensamento => {
+                return {
+                    ...pensamento,
+                    data: new Date(pensamento.data)
+                }
+            })
         }
         catch {
             alert('Erro ao buscar pensamentos')
@@ -14,7 +26,11 @@ const api = {
 
     async salvarPensamento(pensamento) {
         try {
-            const response = await axios.post(`${URL_BASE}/pensamentos`, pensamento)
+            const data = converterStringParaData(pensamento.data)
+            const response = await axios.post(`${URL_BASE}/pensamentos`, {
+                ...pensamento,
+                data
+            })
             return response.data
         }
         catch {
@@ -26,8 +42,12 @@ const api = {
     async buscarPensamentoPorId(id) {
         try {
             const response = await axios.get(`${URL_BASE}/pensamentos/${id}`)
-            return response.data
+            const pensamento = response.data
 
+            return {
+                ...pensamento,
+                data: new Date(pensamento.data)
+            }
         }
         catch {
             alert('Erro ao buscar pensamento')
