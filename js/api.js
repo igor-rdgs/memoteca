@@ -29,7 +29,7 @@ const api = {
             const data = converterStringParaData(pensamento.data)
             const response = await axios.post(`${URL_BASE}/pensamentos`, {
                 ...pensamento,
-                data
+                data: data.toISOString()
             })
             return response.data
         }
@@ -57,7 +57,11 @@ const api = {
 
     async editarPensamento(pensamento) {
         try {
-            const response = await axios.put(`${URL_BASE}/pensamentos/${pensamento.id}`, pensamento)
+            const data = converterStringParaData(pensamento.data)
+            const response = await axios.put(`${URL_BASE}/pensamentos/${pensamento.id}`, {
+                ...pensamento,
+                data: data.toISOString()
+            })
             return response.data
 
         }

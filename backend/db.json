@@ -16,10 +16,9 @@
     },
     {
       "id": "5b8a",
-      "favorito": false,
       "conteudo": "Na minha máquina funciona!",
       "autoria": "Dev",
-      "data": "2026-03-08T08:12:47.789Z"
+      "data": "2026-03-08T00:00:00.000Z"
     },
     {
       "id": "68uy",
@@ -86,10 +85,9 @@
     },
     {
       "id": "4d2e",
-      "favorito": false,
       "conteudo": "Se eu for aí e achar, eu esfrego na sua cara!",
       "autoria": "Mãe",
-      "data": "2026-10-18T20:40:12.876Z"
+      "data": "2026-10-17T00:00:00.000Z"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
