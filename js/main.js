@@ -1,15 +1,30 @@
 import ui from "./ui.js"
 import api from "./api.js"
 
-function removerEspaços(string) {
+const pensamentoSet = new Set()
+
+async function adicionarChaveAoPensamento() {
+    try {
+        const pensamentos = await api.buscarPensamentos()
+        pensamentos.forEach(pensamento => {
+            const chavePensamento = `${pensamento.conteudo.trim().toLowerCase()}-${pensamento.autoria.trim().toLowerCase()}`
+            pensamentoSet.add(chavePensamento)
+        })
+    } catch (error) {
+        alert('Erro ao adicionar a chave ao pensamento')
+    }
+}
+
+function removerEspacos(string) {
     return string.replaceAll(/\s+/g, '')
 }
 
-const regexConteudo = /^[A-Za-z\s]{10,}$/
-const regexAutoria = /^[A-Za-z]{3,15}$/
+const regexConteudo = /^[\p{L}\p{M}\p{P}\s]{10,}$/u
+const regexAutoria = /^[\p{L}\p{M}]{3,15}$/u
 
 document.addEventListener('DOMContentLoaded', () => {
     ui.renderizarPensamentos()
+    adicionarChaveAoPensamento()
 
     const formularioPensamento = document.getElementById('pensamento-form')
     const botaoCancelar = document.getElementById('botao-cancelar')
@@ -28,21 +43,28 @@ async function manipularSubmissaoFormulario(event) {
     const autoria = document.getElementById('pensamento-autoria').value
     const data = document.getElementById('pensamento-data').value
 
-    const conteudoSemEspaços = removerEspaços(conteudo)
-    const autoriaSemEspaços = removerEspaços(autoria)
+    const conteudoSemEspacos = removerEspacos(conteudo)
+    const autoriaSemEspacos = removerEspacos(autoria)
 
-    if (!validarConteudo(conteudoSemEspaços)) {
+    if (!validarConteudo(conteudoSemEspacos)) {
         alert('É permitido a inclusão somente de letras e espaços com no mínimo 10 caracteres.')
         return
     }
 
-    if (!validarAutoria(autoriaSemEspaços)) {
+    if (!validarAutoria(autoriaSemEspacos)) {
         alert('É permitido a inclusão somente de letras entre 3 e 15 caracteres sem espaços.')
         return
     }
 
     if (!validarData(data)) {
         alert('Não é permitido o cadastro de datas futuras. Selecione outra data.')
+        return
+    }
+
+    const chaveNovoPensamento = `${conteudo.trim().toLowerCase()}-${autoria.trim().toLowerCase()}`
+
+    if (pensamentoSet.has(chaveNovoPensamento)) {
+        alert('Esse pensamento já existe.')
         return
     }
 
